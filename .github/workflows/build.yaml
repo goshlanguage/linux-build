@@ -1,0 +1,19 @@
+on:
+  push
+name: Build linux
+jobs:
+  generate:
+    name: Create release-artifacts
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install dependencies for ubuntu
+      run: apt update && apt install -y build-essential git ruby ruby-dev gem
+
+    - name: Install fpm
+      run: gem install fpm
+
+    - name: make
+      run: |
+        make -j$(nproc) BOARD_TARGET=rockpro64 linux-virtual
